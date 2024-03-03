@@ -40,6 +40,7 @@ public class Main {
         // Display cards for each player
         System.out.println("Player 1 Cards: " + player1.getHand());
         System.out.println("Player 2 Cards: " + player2.getHand());
+        player1.getCombination();
     }
 
     private static Card parseCard(String cardString) {
@@ -47,5 +48,6 @@ public class Main {
         char suit = cardString.charAt(cardString.length() - 1);
         return new Card(rank, suit);
     }
+
 
 }
