@@ -6,7 +6,12 @@ class Card {
         this.rank = rank;
         this.suit = suit;
     }
-
+    public String getRank(){
+        return this.rank;
+    }
+    public char getSuit(){
+        return this.suit;
+    }
     @Override
     public String toString() {
         return rank + suit;

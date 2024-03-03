@@ -8,19 +8,28 @@ public class Main {
     public static void main(String[] args) {
         List<Card> player1Cards = new ArrayList<>();
         List<Card> player2Cards = new ArrayList<>();
-        boolean isPlayer1 = true; // Flag to determine which player to assign the card
+
+        Player player1 = new Player();
+        Player player2 = new Player();
+        int count = 0;
         try {
             File myObj = new File("poker.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNext()) {
                 String cardString = myReader.next();
                 if (!cardString.isBlank()) {
-                    if (isPlayer1) {
-                        player1Cards.add(parseCard(cardString));
+
+
+                    if (count < 5) {
+                        player1.addCard(parseCard(cardString));
+                        System.out.println(parseCard(cardString));
+
                     } else {
-                        player2Cards.add(parseCard(cardString));
+                        player2.addCard(parseCard(cardString));
+                        System.out.println(parseCard(cardString));
+
                     }
-                    isPlayer1 = !isPlayer1; // Switch player after each card
+                    count++;
                 }
             }
             myReader.close();
@@ -30,23 +39,30 @@ public class Main {
             return;
         }
 
-        Player player1 = new Player();
-        Player player2 = new Player();
 
-        // Deal cards to players
-        player1Cards.forEach(player1::addCard);
-        player2Cards.forEach(player2::addCard);
+        // Deal cards to player
 
         // Display cards for each player
         System.out.println("Player 1 Cards: " + player1.getHand());
-        System.out.println("Player 2 Cards: " + player2.getHand());
-        player1.getCombination();
+
     }
 
     private static Card parseCard(String cardString) {
         String rank = cardString.substring(0, cardString.length() - 1);
         char suit = cardString.charAt(cardString.length() - 1);
         return new Card(rank, suit);
+    }
+
+    public static int isFlush(List<Card> hand) {
+        System.out.println(hand);
+        for(int i = 0; i < hand.size(); i++ ){
+            System.out.println(hand.get(i).getRank());
+
+
+
+
+        }
+        return 0;
     }
 
 
