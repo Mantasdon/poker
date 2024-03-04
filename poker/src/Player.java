@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Player {
-    private static List<Card> hand;
+    private List<Card> hand;
 
     public Player() {
         this.hand = new ArrayList<>();
@@ -12,7 +12,7 @@ class Player {
         this.hand.add(card);
     }
 
-    public static List<Card> getHand() {
+    public List<Card> getHand() {
         return hand;
     }
 
