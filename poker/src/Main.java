@@ -36,7 +36,9 @@ public class Main {
             return;
         }
 
-        System.out.println(isThree(player1.getHand()));
+        //System.out.println(player1.getHand());
+        System.out.println(isRoyalFLush(player1.getHand()));
+        System.out.println(isFullHouse(player1.getHand()));
 
     }
 
@@ -44,7 +46,7 @@ public class Main {
     private static Card parseCard(String cardString) {
         String rank = cardString.substring(0, cardString.length() - 1);
 
-        if(rank.equals("T")){
+        if(rank.equals("J")){
             rank = "11";
         }
         else if (rank.equals("Q")){
@@ -59,17 +61,67 @@ public class Main {
         char suit = cardString.charAt(cardString.length() - 1);
         return new Card(rank, suit);
     }
+    public static int highCard(List<Card> hand) {
 
-    public static int isFlush(List<Card> hand) {
+        int[] ranks = new int[hand.size()];
+        for (int i = 0; i < hand.size(); i++) {
+            int temp = Integer.valueOf(hand.get(i).getRank());
+            ranks[i] = temp;
 
-        for(int i = 1; i < hand.size() - 1; i++ ){
-            if(hand.get(i - 1).getSuit() != hand.get(i).getSuit()){
-                return 0;
+        }
+        Arrays.sort(ranks);
+        int highCard = 0;
+        for (int i = 0; i < 5; i++) {
+            if (ranks[i] > highCard){
+                highCard = ranks[i];
             }
         }
-        return 1;
+        return highCard;
     }
-    public static int isStraight(List<Card> hand) {
+    public static int isOnePair(List<Card> hand) {
+
+        for (int i = 0; i < hand.size() - 1; i++) {
+            String currentRank = hand.get(i).getRank();
+            for (int j = i + 1; j < hand.size(); j++) {
+                if (currentRank.equals(hand.get(j).getRank())) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+    public static int isTwoPair(List<Card> hand) {
+
+        for (int i = 0; i < hand.size(); i++) {
+            int count = 1;
+            String currentRank = hand.get(i).getRank();
+            for (int j = i + 1; j < hand.size(); j++) {
+                if (currentRank.equals(hand.get(j).getRank())) {
+                    count++;
+                    if (count == 2) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+    public static int isThreePairs(List<Card> hand) {
+
+        for (int i = 0; i < hand.size(); i++) {
+            int count = 1;
+            String currentRank = hand.get(i).getRank();
+            for (int j = i + 1; j < hand.size(); j++) {
+                if (currentRank.equals(hand.get(j).getRank())) {
+                    count++;
+                    if (count == 3) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }    public static int isStraight(List<Card> hand) {
 
         int[] ranks = new int[hand.size()];
         for (int i = 0; i < hand.size(); i++) {
@@ -87,8 +139,48 @@ public class Main {
 
         return 1;
     }
+    public static int isFlush(List<Card> hand) {
 
-    public static int isThree(List<Card> hand) {
+        for(int i = 1; i < hand.size(); i++ ){
+            if(hand.get(i - 1).getSuit() != hand.get(i).getSuit()){
+
+                return 0;
+            }
+        }
+        return 1;
+    }
+    public static int isFullHouse(List<Card> hand) {
+
+        int rankCount = 0;
+        String rank = "";
+        for (Card card : hand) {
+            if (card.getRank().equals(rank)) {
+                rankCount++;
+            } else {
+                rankCount = 1;
+                rank = card.getRank();
+            }
+            if (rankCount == 3) {
+                break;
+            }
+        }
+
+        if (rankCount != 3) {
+            return 0;
+        }
+
+        List<Card> remainingCards = new ArrayList<>();
+        for (Card card : hand) {
+            if (!card.getRank().equals(rank)) {
+                remainingCards.add(card);
+            }
+        }
+
+        return isOnePair(remainingCards);
+    }
+
+
+    public static int isFourPairs(List<Card> hand) {
 
         for (int i = 0; i < hand.size(); i++) {
             int count = 1;
@@ -96,7 +188,7 @@ public class Main {
             for (int j = i + 1; j < hand.size(); j++) {
                 if (currentRank.equals(hand.get(j).getRank())) {
                     count++;
-                    if (count == 3) {
+                    if (count == 4) {
                         return 1;
                     }
                 }
@@ -104,5 +196,39 @@ public class Main {
         }
         return 0;
     }
+
+
+
+
+
+
+
+
+
+    public static int isStraightFlush(List<Card> hand) {
+        if(isStraight(hand) == 1 && isFlush(hand) == 1){
+            return 1;
+
+        }
+        return 0;
+    }
+    public static int isRoyalFLush(List<Card> hand) {
+        if(isFlush(hand) == 1){
+
+            int[] ranks = new int[hand.size()];
+            for (int i = 0; i < hand.size(); i++) {
+                int temp = Integer.valueOf(hand.get(i).getRank());
+                ranks[i] = temp;
+
+            }
+            Arrays.sort(ranks);
+            if(ranks[0] == 10 && isStraight(hand) == 1) {
+                return 1;
+
+            }
+        }
+        return 0;
+    }
+
 
 }
