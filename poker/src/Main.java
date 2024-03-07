@@ -4,17 +4,21 @@ import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.util.Scanner;
 import java.util.*;
 
-public class Main {
+import static org.junit.Assert.*;
+
+public class Main {    // Main method to initialize players, read card information, and determine the winner
     public static void main(String[] args) {
         Player player1 = new Player();
         Player player2 = new Player();
         int count = 0;
-        try {
+        try { // Read card information from a file named "poker.txt"
+
             File myObj = new File("poker.txt");
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNext()) {
                 String cardString = myReader.next();
-                if (!cardString.isBlank()) {
+                if (!cardString.isBlank()) { // Fill hands for player 1 and player 2
+
 
 
                     if (count < 5) {
@@ -35,14 +39,19 @@ public class Main {
             e.printStackTrace();
             return;
         }
-
+        // Print hands of both players
         System.out.println(player1.getHand());
         System.out.println(player2.getHand());
+
+        // Determine the winner and print the result
         getWinner(player1,player2);
+
+        // tests
+        tests();
 
     }
 
-
+    // Method to parse a card string and create a Card object
     private static Card parseCard(String cardString) {
         String rank = cardString.substring(0, cardString.length() - 1);
 
@@ -90,7 +99,7 @@ public class Main {
             }
         }
 
-        return 0; // It's a tie
+        return 0;
     }
     public static int isOnePair(Player p) {
         List<Card> hand = p.getHand();
@@ -259,6 +268,7 @@ public class Main {
         return 0;
     }
 
+    //Method of getting points of each player hands
     public static int evaluate(Player p) {
         List<Card> hand = p.getHand();
 
@@ -283,29 +293,34 @@ public class Main {
         }
         return 0;
     }
-
-    public static void getWinner(Player p1, Player p2) {
+    // Method to determine the winner based on evaluated hands and high cards
+    public static int getWinner(Player p1, Player p2) {
+        // Evaluate hands of both players
         if(evaluate(p1) == 0 && evaluate(p2) == 0){
             if(highCard(p1,p2) == 0){
                 System.out.println("Its a tie");
                 System.out.println((p1.getHand()));
                 System.out.println((p2.getHand()));
+                return 0;
 
             } else if (highCard(p1,p2) == 1) {
                 System.out.println("Player 1 won");
                 System.out.println("Player 1 hand:");
                 System.out.println((p1.getHand()));
+                return 1;
             }
             else{
                 System.out.println("Player 2 won");
                 System.out.println("Player 2 hand:");
                 System.out.println((p2.getHand()));
+                return 2;
             }
 
         } else if (evaluate(p1) > evaluate(p2)){
             System.out.println("Player 1 won");
             System.out.println("Player 1 hand:");
             System.out.println((p1.getHand()));
+            return 1;
 
 
         } else if (evaluate(p1) == evaluate(p2)) {
@@ -316,33 +331,62 @@ public class Main {
                     System.out.println("Its a tie");
                     System.out.println((p1.getHand()));
                     System.out.println((p2.getHand()));
+                    return 0;
+
 
                 } else if (highCard(p1,p2) == 1) {
                     System.out.println("Player 1 won");
                     System.out.println("Player 1 hand:");
                     System.out.println((p1.getHand()));
+                    return 1;
                 }
                 else{
                     System.out.println("Player 2 won");
                     System.out.println("Player 2 hand:");
                     System.out.println((p2.getHand()));
+                    return 2;
                 }
             }else if (p1_high_card > p2_high_card) {
                 System.out.println("Player 1 won");
                 System.out.println("Player 1 hand:");
                 System.out.println((p1.getHand()));
+                return 1;
             }
             else{
                 System.out.println("Player 2 won");
                 System.out.println("Player 2 hand:");
                 System.out.println((p2.getHand()));
+                return 2;
             }
         } else{
             System.out.println("Player 2 won");
             System.out.println("Player 2 hand:");
             System.out.println((p2.getHand()));
+            return 2;
         }
 
+    }
+
+
+    public static void tests() {
+        System.out.println("tests");
+        Player player1 = new Player();
+        Player player2 = new Player();
+
+        // Set up hands for player 1 and player 2
+        player1.addCard(new Card("2", 'H'));
+        player1.addCard(new Card("3", 'H'));
+        player1.addCard(new Card("4", 'C'));
+        player1.addCard(new Card("5", 'H'));
+        player1.addCard(new Card("6", 'H'));
+
+        player2.addCard(new Card("2", 'D'));
+        player2.addCard(new Card("3", 'D'));
+        player2.addCard(new Card("4", 'D'));
+        player2.addCard(new Card("5", 'D'));
+        player2.addCard(new Card("7", 'D'));
+
+        assertEquals(2, getWinner(player1, player2));
     }
 
 }
