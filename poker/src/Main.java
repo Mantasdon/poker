@@ -36,13 +36,8 @@ public class Main {
             return;
         }
 
-        //System.out.println(player1.getHand());
         System.out.println(player1.getHand());
         System.out.println(player2.getHand());
-        System.out.println(player1.getHighCard());
-        System.out.println(player2.getHighCard());
-        System.out.println(evaluate(player2));
-        System.out.println(evaluate(player1));
         getWinner(player1,player2);
 
     }
@@ -69,23 +64,33 @@ public class Main {
         char suit = cardString.charAt(cardString.length() - 1);
         return new Card(rank, suit);
     }
-    public static int highCard(Player p) {
+    public static int highCard(Player p1, Player p2) {
 
-        List<Card> hand = p.getHand();
+        List<Card> hand = p1.getHand();
+        List<Card> hand2 = p2.getHand();
         int[] ranks = new int[hand.size()];
         for (int i = 0; i < hand.size(); i++) {
             int temp = Integer.valueOf(hand.get(i).getRank());
             ranks[i] = temp;
 
         }
+        int[] ranks2 = new int[hand2.size()];
+        for (int i = 0; i < hand2.size(); i++) {
+            int temp = Integer.valueOf(hand2.get(i).getRank());
+            ranks2[i] = temp;
+
+        }
         Arrays.sort(ranks);
-        int highCard = 0;
-        for (int i = 0; i < 5; i++) {
-            if (ranks[i] > highCard){
-                highCard = ranks[i];
+        Arrays.sort(ranks2);
+        for (int i = ranks.length - 1; i >= 0; i--) {
+            if (ranks[i] > ranks2[i]) {
+                return 1;
+            } else if (ranks[i] < ranks2[i]) {
+                return 2;
             }
         }
-        return highCard;
+
+        return 0; // It's a tie
     }
     public static int isOnePair(Player p) {
         List<Card> hand = p.getHand();
@@ -175,7 +180,6 @@ public class Main {
             }
             if (rankCount == 3) {
                 p.SetHighCard(rank);
-                System.out.println(p.getHighCard());
                 break;
             }
         }
@@ -282,54 +286,63 @@ public class Main {
 
     public static void getWinner(Player p1, Player p2) {
         if(evaluate(p1) == 0 && evaluate(p2) == 0){
-            if(highCard(p1) > highCard(p2)){
+            if(highCard(p1,p2) == 0){
+                System.out.println("Its a tie");
+                System.out.println((p1.getHand()));
+                System.out.println((p2.getHand()));
+
+            } else if (highCard(p1,p2) == 1) {
                 System.out.println("Player 1 won");
                 System.out.println("Player 1 hand:");
                 System.out.println((p1.getHand()));
-
+            }
+            else{
+                System.out.println("Player 2 won");
+                System.out.println("Player 2 hand:");
+                System.out.println((p2.getHand()));
             }
 
+        } else if (evaluate(p1) > evaluate(p2)){
+            System.out.println("Player 1 won");
+            System.out.println("Player 1 hand:");
+            System.out.println((p1.getHand()));
+
+
+        } else if (evaluate(p1) == evaluate(p2)) {
+            int p1_high_card = Integer.valueOf(p1.getHighCard());
+            int p2_high_card = Integer.valueOf(p2.getHighCard());
+            if(p1_high_card == p2_high_card){
+                if(highCard(p1,p2) == 0){
+                    System.out.println("Its a tie");
+                    System.out.println((p1.getHand()));
+                    System.out.println((p2.getHand()));
+
+                } else if (highCard(p1,p2) == 1) {
+                    System.out.println("Player 1 won");
+                    System.out.println("Player 1 hand:");
+                    System.out.println((p1.getHand()));
+                }
+                else{
+                    System.out.println("Player 2 won");
+                    System.out.println("Player 2 hand:");
+                    System.out.println((p2.getHand()));
+                }
+            }else if (p1_high_card > p2_high_card) {
+                System.out.println("Player 1 won");
+                System.out.println("Player 1 hand:");
+                System.out.println((p1.getHand()));
+            }
+            else{
+                System.out.println("Player 2 won");
+                System.out.println("Player 2 hand:");
+                System.out.println((p2.getHand()));
+            }
+        } else{
+            System.out.println("Player 2 won");
+            System.out.println("Player 2 hand:");
+            System.out.println((p2.getHand()));
         }
-      if(evaluate(p1) > evaluate(p2)){
-          System.out.println("Player 1 won");
-          System.out.println("Player 1 hand:");
-          System.out.println((p1.getHand()));
 
-
-      } else if (evaluate(p1) == evaluate(p2)) {
-          int p1_high_card = Integer.valueOf(p1.getHighCard());
-          int p2_high_card = Integer.valueOf(p2.getHighCard());
-          if(p1_high_card == p2_high_card){
-              if(highCard(p1) == highCard(p2)){
-                  System.out.println("Its a tie");
-                  System.out.println((p1.getHand()));
-                  System.out.println((p2.getHand()));
-
-              } else if (highCard(p1) > highCard(p2)) {
-                  System.out.println("Player 1 won");
-                  System.out.println("Player 1 hand:");
-                  System.out.println((p1.getHand()));
-              }
-              else{
-                  System.out.println("Player 2 won");
-                  System.out.println("Player 2 hand:");
-                  System.out.println((p2.getHand()));
-              }
-          }else if (p1_high_card > p2_high_card) {
-              System.out.println("Player 1 won");
-              System.out.println("Player 1 hand:");
-              System.out.println((p1.getHand()));
-          }
-          else{
-              System.out.println("Player 2 won");
-              System.out.println("Player 2 hand:");
-              System.out.println((p2.getHand()));
-          }
-      } else{
-          System.out.println("Player 2 won");
-          System.out.println("Player 2 hand:");
-          System.out.println((p2.getHand()));
-      }
     }
 
 }
