@@ -18,9 +18,7 @@ class Player {
     public String getHighCard() {
         return highCard;
     }
-    public void removeCard(Card card) {
-        this.hand.remove(card);
-    }
+
     public List<Card> getHand() {
         return hand;
     }
