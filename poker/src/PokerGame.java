@@ -83,31 +83,31 @@ public class PokerGame {
 
                 } else if (highCard(p1,p2) == 1) {
                     System.out.println("Player 1 won");
-                    System.out.println("Player 1 hand:");
+                    System.out.println("Winner Hand");
                     System.out.println((p1.getHand()));
                     return 1;
                 }
                 else{
                     System.out.println("Player 2 won");
-                    System.out.println("Player 2 hand:");
+                    System.out.println("Winner Hand");
                     System.out.println((p2.getHand()));
                     return 2;
                 }
             }else if (p1_high_card > p2_high_card) {
                 System.out.println("Player 1 won");
-                System.out.println("Player 1 hand:");
+                System.out.println("Winner Hand");
                 System.out.println((p1.getHand()));
                 return 1;
             }
             else{
                 System.out.println("Player 2 won");
-                System.out.println("Player 2 hand:");
+                System.out.println("Winner Hand");
                 System.out.println((p2.getHand()));
                 return 2;
             }
         } else{
             System.out.println("Player 2 won");
-            System.out.println("Player 2 hand:");
+            System.out.println("Winner Hand");
             System.out.println((p2.getHand()));
             return 2;
         }
